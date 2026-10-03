@@ -1,121 +1,76 @@
 # Base Convertor
 
-A Python-based mobile utility app for converting numbers between common numeral systems, including decimal, binary, octal, and hexadecimal. Built with Kivy and KivyMD, the app provides a simple touchscreen interface, instant conversion results, and a local conversion history stored in SQLite.
-
-## Overview
-
-Base Convertor is designed to make number-system conversions quick and easy on mobile devices. It supports both integer and fractional values and allows users to switch conversion types from a dropdown menu without leaving the screen.
-
-The project is structured as a KivyMD app and is also configured for Android packaging via Buildozer, making it suitable for development, testing, and APK generation.
+Base Convertor is an offline number-base conversion app built with Python, Kivy, and KivyMD. It converts values between decimal, binary, octal, and hexadecimal, and keeps a local history of successful conversions in SQLite.
 
 ## Features
 
-- Convert between:
-  - Decimal ↔ Binary
-  - Decimal ↔ Octal
-  - Decimal ↔ Hexadecimal
-  - Binary ↔ Octal
-  - Binary ↔ Hexadecimal
-  - Octal ↔ Hexadecimal
-- Support for fractional inputs such as `10.5`, `101.011`, etc.
-- Live conversion results with contextual validation messages
-- Local history of prior conversions saved in `history.db`
-- Drawer-based history panel for recent conversions
-- Mobile-friendly UI built with Material Design styling
-- Android packaging support via `buildozer.spec`
+- Convert between all pairs of decimal, binary, octal, and hexadecimal.
+- Convert integer and fractional values. Fractional calculations use floating-point arithmetic; non-decimal fractional expansions are limited to 10 digits, so results may be approximate.
+- Choose a conversion mode from the on-screen menu and see validation feedback for invalid input.
+- View previous successful conversions, including their conversion mode and timestamp.
+- Use the app without network access or special Android permissions.
+- Build an Android APK with the included Buildozer configuration.
 
-## Tech Stack
+## Requirements
 
-- Python 3
-- Kivy
-- KivyMD
-- SQLite3
-- Buildozer (for Android packaging)
+- Python 3.10 is recommended (see the version note in `requirements.txt`).
+- `pip` and a virtual environment for local development.
+- For Android builds, Buildozer's Android SDK/NDK toolchain requirements. A Linux environment is recommended; on Windows, use WSL.
 
-## Project Structure
+## Run locally
 
-```text
-Base Convertor/
-├── main.py                 # Main application logic and UI definitions
-├── buildozer.spec         # Android packaging configuration
-├── history.db             # Local SQLite database for conversion history
-├── .gitignore             # Git ignore rules
-├── LICENSE                # Project license
-├── assets/                # App assets / visual resources
-├── _COMPILED/             # Compiled artifacts or packaged output
-├── _DOCS/                 # Project documentation files
-├── README.md              # Project overview and usage guide
-└── .DS_Store              # macOS metadata file
-```
-
-## Installation
-
-### Prerequisites
-
-- Python 3.8+
-- pip
-- A virtual environment is recommended
-
-### Install dependencies
+Create and activate a virtual environment, then install the app dependencies:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install --upgrade pip
-pip install kivy kivymd
+python -m pip install --upgrade pip
+python -m pip install kivy==2.2.0 kivymd==1.0.2 pillow
 ```
 
-## Running the App
-
-From the project root, run:
+Run the app from the project root:
 
 ```bash
 python main.py
 ```
 
-This launches the KivyMD application window locally.
+The full [`requirements.txt`](requirements.txt) also includes tools for packaging, including Buildozer and PyInstaller. Those tools are not needed just to run the app locally.
 
-## Android Build
+## Use the app
 
-This project includes a `buildozer.spec` file for Android packaging.
+1. Choose a conversion direction from the menu (for example, **Decimal to Binary**).
+2. Enter a value using digits valid for the selected source base. Use `A`–`F` for hexadecimal digits.
+3. Press **Convert** or submit the input.
+4. Read the result below the input. Successful conversions are added to the history drawer.
 
-To build an APK:
+## Build for Android
+
+Buildozer and its Android prerequisites must be installed and configured for your environment. From the project root, build a debug APK with:
 
 ```bash
-pip install buildozer
 buildozer android debug
 ```
 
-If you are deploying to Android, Buildozer will package the app according to the settings defined in `buildozer.spec`.
+The generated APK is placed in `bin/`. The current [`buildozer.spec`](buildozer.spec) configures a portrait app targeting Android API 33, with a minimum API level of 21 and `arm64-v8a`/`armeabi-v7a` architectures. It also specifies the app icon, presplash, and runtime requirements.
 
-## How It Works
+## Conversion history
 
-1. Select the conversion mode from the dropdown menu.
-2. Enter a number in the input field.
-3. Tap the Convert button.
-4. The app converts the value and displays the result.
-5. Successful conversions are saved to the local SQLite database and shown in the history drawer.
+The app creates and uses `history.db` in its working/private app storage. On desktop, run `main.py` from the project root to keep the database in the expected location. The database stores the conversion mode, input/output summary, and timestamp; no remote service is used.
 
-## Notes
+## Project files
 
-- The app stores conversion records using the current timestamp and a generated conversion summary.
-- Conversion validation is handled in the main app logic, with detailed error messages shown for invalid inputs.
-- The app uses a local SQLite database rather than a remote service, keeping the feature self-contained and lightweight.
+```text
+.
+├── assets/          # App icon and presplash image
+├── _COMPILED/       # Previously generated distribution files
+├── _DOCS/           # Project documents
+├── main.py          # App UI, conversion logic, and history handling
+├── requirements.txt # Runtime and packaging dependencies
+├── buildozer.spec   # Android packaging configuration
+├── LICENSE
+└── README.md
+```
 
 ## License
 
-This project is licensed under the terms of the included [LICENSE](LICENSE) file.
-
-## Contributing
-
-Contributions are welcome. If you want to improve the app, you can:
-
-- add more numeral-system conversions
-- improve validation for edge cases
-- add a cleaner settings panel
-- enhance the UI for better accessibility and responsiveness
-- refine Android packaging for release builds
-
-## Author
-
-This project was created as a personal utility application for quick base conversion tasks and is suitable for learning, experimentation, and mobile app prototyping.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for the terms.

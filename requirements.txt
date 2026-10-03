@@ -1,0 +1,42 @@
+# ==============================================================================
+# Base Convertor - Project Requirements
+# Python: 3.10.x recommended
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Core Runtime (Local Execution & Cross-Platform UI)
+# ------------------------------------------------------------------------------
+# Framework & UI toolkit (Pinned to ensure compatibility across targets)
+kivy==2.2.0
+kivymd==1.0.2 # kivymd==1.1.1 (Later version - baseconvertor build)
+
+# Image processing library required by Kivy / KivyMD for texture handling
+pillow>=9.5.0
+
+# NOTE: 'sqlite3' is part of the standard Python library, no pip install needed.
+
+
+# ------------------------------------------------------------------------------
+# 2. Desktop Build (Windows .exe generation via PyInstaller)
+# ------------------------------------------------------------------------------
+# Tool used to freeze the Python script into a standalone desktop executable
+pyinstaller==6.2.0
+
+# Windows dependency binaries required for SDL2 and OpenGL runtime linking
+# (Uncomment below if building on a clean Windows machine)
+# kivy-deps.sdl2~=0.6.0
+# kivy-deps.glew~=0.3.1
+# kivy-deps.angle~=0.3.3
+
+
+# ------------------------------------------------------------------------------
+# 3. Android APK Build (Packaging via Buildozer & Python-for-Android)
+# ------------------------------------------------------------------------------
+# Packaging toolchain for creating debug/release APKs
+buildozer==1.5.0
+
+# Cython C-compiler required by Buildozer recipe builds (p4a)
+cython==0.29.28
+
+# Virtual environment manager required by Buildozer under the hood
+virtualenv>=20.25.0
